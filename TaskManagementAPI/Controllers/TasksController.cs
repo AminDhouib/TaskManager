@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManagementAPI.Data;
-using TaskManagementAPI.Models;
+using ModelTask = TaskManagementAPI.Models.Task; // Alias for TaskManagementAPI.Models.Task
+using System; // Add this using directive for Guid
 
 namespace TaskManagementAPI.Controllers
 {
@@ -20,13 +21,13 @@ namespace TaskManagementAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Task>>> GetTasks()
+        public async Task<ActionResult<IEnumerable<ModelTask>>> GetTasks()
         {
             return await _context.Tasks.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Task>> GetTask(string id)
+        public async Task<ActionResult<ModelTask>> GetTask(string id)
         {
             var task = await _context.Tasks.FindAsync(id);
 
@@ -39,7 +40,7 @@ namespace TaskManagementAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Task>> PostTask(Task task)
+        public async Task<ActionResult<ModelTask>> PostTask(ModelTask task)
         {
             task.Id = Guid.NewGuid().ToString();
             _context.Tasks.Add(task);
@@ -49,7 +50,7 @@ namespace TaskManagementAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTask(string id, Task task)
+        public async Task<IActionResult> PutTask(string id, ModelTask task)
         {
             if (id != task.Id)
             {
